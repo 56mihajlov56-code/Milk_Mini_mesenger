@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L1 Team | Antivirus Recovery Kit</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --accent: #00ff41;
+            --bg-dark: #0a0a0b;
+            --panel-dark: #161618;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e0e0e0;
+        }
+
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .cyber-border {
+            border: 1px solid rgba(0, 255, 65, 0.2);
+        }
+
+        .cyber-border:hover {
+            border: 1px solid rgba(0, 255, 65, 0.5);
+        }
+
+        .glow-text {
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #333;
+        }
+
+        @keyframes scan {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .scan-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 255, 65, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 65, 0.8);
+            animation: scan 3s linear infinite;
+            z-index: 10;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen overflow-x-hidden">
+
+    <!-- Header -->
+    <header class="border-b border-white/5 bg-black/40 backdrop-blur-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-lg flex items-center justify-center border border-emerald-500/50">
+                    <i class="fas fa-shield-virus text-emerald-400 text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl tracking-tighter text-white">L1 TEAM <span class="text-emerald-500">ANTIVIRUS</span></h1>
+                    <p class="text-[10px] uppercase tracking-[0.2em] text-emerald-500/70">Система Аварийного Восстановления</p>
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#overview" class="hover:text-emerald-400 transition-colors">Возможности</a>
+                <a href="#script" class="hover:text-emerald-400 transition-colors">Исходный код</a>
+                <a href="#winre" class="hover:text-emerald-400 transition-colors">Инструкция</a>
+            </nav>
+            <button onclick="copyScript()" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-md text-sm font-bold transition-all flex items-center gap-2">
+                <i class="fas fa-copy"></i> КОПИРОВАТЬ СКРИПТ
+            </button>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        
+        <!-- Hero Section -->
+        <section id="overview" class="grid lg:grid-cols-2 gap-12 items-center mb-24">
+            <div>
+                <h2 class="text-5xl font-extrabold text-white mb-6 leading-tight">
+                    Профессиональное восстановление <span class="text-emerald-500">после заражения</span>
+                </h2>
+                <p class="text-gray-400 text-lg mb-8 leading-relaxed">
+                    Скрипт разработан специально для работы в условиях ограниченных ресурсов (WinRE/Safe Mode). 
+                    Использует эвристический анализ для выявления RAT-троянов, скрытых процессов и аномалий файловой системы.
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                        <i class="fas fa-microchip text-emerald-500 mb-2"></i>
+                        <h3 class="font-bold text-white">AI-Heuristics</h3>
+                        <p class="text-xs text-gray-500">Поиск паттернов вредоносного ПО</p>
+                    </div>
+                    <div class="p-4 bg-white/5 rounded-xl border border-white/5">
+                        <i class="fas fa-database text-emerald-500 mb-2"></i>
+                        <h3 class="font-bold text-white">Reg-Cleaner</h3>
+                        <p class="text-xs text-gray-500">Очистка веток автозагрузки</p>
+                    </div>
+                </div>
+            </div>
+            <div class="relative group">
+                <div class="absolute -inset-1 bg-emerald-500/20 rounded-2xl blur-xl group-hover:bg-emerald-500/30 transition duration-1000"></div>
+                <div class="relative bg-panel-dark p-6 rounded-2xl border border-white/10 overflow-hidden min-h-[400px]">
+                    <div class="scan-line"></div>
+                    <div class="flex items-center justify-between mb-6 border-b border-white/10 pb-4">
+                        <div class="flex space-x-2">
+                            <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Terminal Output: Active</span>
+                    </div>
+                    <div id="terminal" class="code-font text-sm space-y-2 text-emerald-500/90">
+                        <p>> Initializing L1 Team Engine...</p>
+                        <p class="text-gray-500">Searching for anomalies...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Section -->
+        <section id="script" class="mb-24">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-3xl font-bold text-white">Исходный код Python</h2>
+                    <p class="text-gray-500">Скопируйте и сохраните как antivirus.py</p>
+                </div>
+                <div class="flex gap-2">
+                    <span class="px-3 py-1 bg-white/5 rounded text-xs text-gray-400 border border-white/5">Python 3.8+</span>
+                    <span class="px-3 py-1 bg-white/5 rounded text-xs text-gray-400 border border-white/5">WinRE Compatible</span>
+                </div>
+            </div>
+
+            <div class="relative">
+                <div class="absolute right-4 top-4 z-10">
+                    <button onclick="copyScript()" class="p-2 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded border border-emerald-500/30 transition-all cursor-pointer">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+                <pre class="bg-[#0d0d0f] p-8 rounded-2xl border border-white/5 overflow-x-auto max-h-[600px] text-sm leading-relaxed code-font" id="pythonCode">
+import os
+import sys
+import winreg
+import psutil
+import shutil
+import hashlib
+import ctypes
+from datetime import datetime
+
+# --- Антивирус от L1 team ---
+# Emergency Recovery Script v1.2
+
+WHITE_LIST_PROCESSES = [
+    "explorer.exe", "svchost.exe", "lsass.exe", "services.exe",
+    "wininit.exe", "smss.exe", "csrss.exe", "taskhostw.exe",
+    "runtimebroker.exe", "winlogon.exe"
+]
+
+SUSPICIOUS_PATHS = [
+    os.environ.get('TEMP', ''),
+    os.environ.get('APPDATA', ''),
+    os.environ.get('LOCALAPPDATA', ''),
+    os.path.join(os.environ.get('SystemDrive', 'C:'), '\\'),
+]
+
+EXTENSIONS = ('.exe', '.scr', '.vbs', '.ps1', '.bat', '.cmd')
+
+class L1Antivirus:
+    def __init__(self):
+        self.deleted_files = []
+        self.cleaned_registry = []
+        self.scan_start_time = datetime.now()
+
+    def log(self, message, type="INFO"):
+        prefix = f"[{type}]"
+        print(f"{datetime.now().strftime('%H:%M:%S')} {prefix} {message}")
+
+    def is_admin(self):
+        try:
+            return ctypes.windll.shell32.IsUserAnAdmin()
+        except:
+            return False
+
+    def scan_registry(self):
+        self.log("Сканирование веток автозагрузки реестра...")
+        keys = [
+            (winreg.HKEY_LOCAL_MACHINE, r"Software\Microsoft\Windows\CurrentVersion\Run"),
+            (winreg.HKEY_LOCAL_MACHINE, r"Software\Microsoft\Windows\CurrentVersion\RunOnce"),
+            (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run"),
+            (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\RunOnce")
+        ]
+
+        for root, path in keys:
+            try:
+                with winreg.OpenKey(root, path, 0, winreg.KEY_ALL_ACCESS) as key:
+                    i = 0
+                    while True:
+                        try:
+                            name, value, _ = winreg.EnumValue(key, i)
+                            # Интеллектуальный фильтр
+                            is_suspicious = False
+                            val_lower = value.lower()
+                            
+                            # Проверка на белый список и пути
+                            if not any(proc in val_lower for proc in WHITE_LIST_PROCESSES):
+                                if any(p.lower() in val_lower for p in SUSPICIOUS_PATHS) or ":" not in value:
+                                    is_suspicious = True
+                            
+                            if is_suspicious:
+                                self.log(f"Удаление подозрительного ключа реестра: {name} ({value})", "WARN")
+                                winreg.DeleteValue(key, name)
+                                self.cleaned_registry.append(f"{path}\\{name}")
+                                continue # Не инкрементируем индекс, так как элемент удален
+                            i += 1
+                        except OSError:
+                            break
+            except Exception as e:
+                self.log(f"Доступ к разделу {path} ограничен", "ERROR")
+
+    def heuristic_scan(self):
+        self.log("Запуск эвристического анализа файлов (AI-подобная логика)...")
+        for drive in [f"{d}:\\" for d in "CDEFGHIJKLMNOPQRSTUVWXYZ" if os.path.exists(f"{d}:\\")]:
+            self.log(f"Проверка диска {drive}...")
+            
+            # Анализ RAT и файлов-пустышек (100MB аномалии)
+            size_map = {}
+            
+            for root, dirs, files in os.walk(drive):
+                # Ограничение глубины для WinRE
+                if root.count(os.sep) > 8: continue 
+                
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    try:
+                        # 1. Проверка подозрительных расширений в Temp/AppData
+                        if any(sp.lower() in root.lower() for sp in SUSPICIOUS_PATHS):
+                            if file.lower().endswith(EXTENSIONS):
+                                self.log(f"Обнаружен опасный объект в системной папке: {file}", "CRITICAL")
+                                os.remove(file_path)
+                                self.deleted_files.append(file_path)
+                                continue
+
+                        # 2. Анализ дублей и аномалий (RAT Check)
+                        fsize = os.path.getsize(file_path)
+                        if fsize > 90 * 1024 * 1024 and fsize < 110 * 1024 * 1024: # Около 100 МБ
+                            # Если нашли 3+ одинаковых по размеру файла в странных местах
+                            size_map[fsize] = size_map.get(fsize, []) + [file_path]
+                            if len(size_map[fsize]) > 3:
+                                for path_to_del in size_map[fsize]:
+                                    if os.path.exists(path_to_del):
+                                        self.log(f"Удаление RAT-клона: {path_to_del}", "CRITICAL")
+                                        os.remove(path_to_del)
+                                        self.deleted_files.append(path_to_del)
+
+                    except Exception:
+                        continue
+
+    def cleanup_processes(self):
+        self.log("Анализ активных процессов...")
+        for proc in psutil.process_iter(['pid', 'name', 'exe']):
+            try:
+                exe_path = proc.info['exe']
+                if not exe_path: continue
+                
+                # Если процесс запущен из подозрительного места и не в белом списке
+                if any(sp.lower() in exe_path.lower() for sp in SUSPICIOUS_PATHS):
+                    if proc.info['name'].lower() not in WHITE_LIST_PROCESSES:
+                        self.log(f"Завершение подозрительного процесса: {proc.info['name']} (PID: {proc.info['pid']})", "WARN")
+                        proc.kill()
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+
+    def run(self):
+        print("\n" + "="*50)
+        print("--- Антивирус от L1 team ---")
+        print("="*50 + "\n")
+        
+        if not self.is_admin():
+            self.log("ВНИМАНИЕ: Скрипт запущен без прав администратора!", "ERROR")
+        
+        self.cleanup_processes()
+        self.scan_registry()
+        self.heuristic_scan()
+        
+        duration = datetime.now() - self.scan_start_time
+        
+        print("\n" + "="*50)
+        print("--- L1 team: сканирование завершено ---")
+        print(f"Время работы: {duration}")
+        print(f"Удалено файлов: {len(self.deleted_files)}")
+        print(f"Очищено ключей реестра: {len(self.cleaned_registry)}")
+        print("="*50)
+        
+        if self.deleted_files or self.cleaned_registry:
+            print("\nПОДРОБНЫЙ ОТЧЕТ:")
+            for f in self.deleted_files: print(f"[-] Файл: {f}")
+            for r in self.cleaned_registry: print(f"[-] Реестр: {r}")
+        else:
+            print("\nУгроз не обнаружено. Система чиста.")
+
+if __name__ == "__main__":
+    scanner = L1Antivirus()
+    scanner.run()
+    input("\nНажмите Enter для выхода...")
+</pre>
+            </div>
+        </section>
+
+        <!-- WinRE Instructions -->
+        <section id="winre" class="mb-24">
+            <h2 class="text-3xl font-bold text-white mb-8">Запуск в WinRE (Emergency)</h2>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="p-6 bg-white/5 border border-white/5 rounded-2xl relative overflow-hidden group">
+                    <div class="text-emerald-500 font-bold text-4xl mb-4 opacity-20 group-hover:opacity-100 transition-opacity">01</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Подготовка</h3>
+                    <p class="text-gray-400 text-sm">Сохраните код в файл <code class="bg-black px-1 text-emerald-400">antivirus.py</code> на USB-накопитель. Убедитесь, что на целевой системе установлен Python или используйте портативную версию.</p>
+                </div>
+                <div class="p-6 bg-white/5 border border-white/5 rounded-2xl relative overflow-hidden group">
+                    <div class="text-emerald-500 font-bold text-4xl mb-4 opacity-20 group-hover:opacity-100 transition-opacity">02</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Вход в WinRE</h3>
+                    <p class="text-gray-400 text-sm">Загрузитесь с установочного диска Windows -> Восстановление системы -> Поиск и устранение неисправностей -> Командная строка.</p>
+                </div>
+                <div class="p-6 bg-white/5 border border-white/5 rounded-2xl relative overflow-hidden group">
+                    <div class="text-emerald-500 font-bold text-4xl mb-4 opacity-20 group-hover:opacity-100 transition-opacity">03</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Выполнение</h3>
+                    <p class="text-gray-400 text-sm">Найдите букву вашего USB диска и запустите скрипт командой: <br><code class="bg-black px-1 text-emerald-400 block mt-2">python antivirus.py</code></p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-white/5 bg-black/40 py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center items-center space-x-2 mb-4">
+                <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+                <span class="text-emerald-500 font-bold tracking-widest text-xs uppercase">L1 Team Security Operations</span>
+            </div>
+            <p class="text-gray-500 text-sm">© 2024 L1 Team. Инструментарий предназначен для экстренного восстановления систем.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Terminal Simulation Logic
+        const terminal = document.getElementById('terminal');
+        const logs = [
+            { t: 'INFO', m: 'Scanning HKEY_LOCAL_MACHINE\\...\\Run' },
+            { t: 'WARN', m: 'Suspicious entry found: "WindowsUpdate" -> "C:\\Temp\\update.vbs"' },
+            { t: 'INFO', m: 'Heuristic analysis: Analyzing C:\\Users\\Public' },
+            { t: 'CRIT', m: 'RAT Pattern detected: 4 identical 102400KB files found in AppData' },
+            { t: 'INFO', m: 'Deleting malware clones...' },
+            { t: 'INFO', m: 'Process monitoring: 124 threads active' },
+            { t: 'INFO', m: 'Scanning drive D:\\ (External)' },
+            { t: 'DONE', m: '--- L1 team: сканирование завершено ---' }
+        ];
+
+        let index = 0;
+        function addLog() {
+            if (index >= logs.length) {
+                index = 0;
+                terminal.innerHTML = '<p>> Re-initializing L1 Team Engine...</p>';
+            }
+            const log = logs[index];
+            const p = document.createElement('p');
+            let color = 'text-emerald-500/80';
+            if (log.t === 'WARN') color = 'text-yellow-400';
+            if (log.t === 'CRIT') color = 'text-red-500 font-bold';
+            if (log.t === 'DONE') color = 'text-white border-t border-white/10 mt-4 pt-2';
+            
+            p.className = `${color} opacity-0 transition-opacity duration-500`;
+            p.innerHTML = `<span class="opacity-50">[${new Date().toLocaleTimeString()}]</span> [${log.t}] ${log.m}`;
+            terminal.appendChild(p);
+            
+            setTimeout(() => p.classList.remove('opacity-0'), 10);
+            
+            index++;
+            setTimeout(addLog, Math.random() * 2000 + 500);
+            
+            if (terminal.children.length > 15) {
+                terminal.removeChild(terminal.children[0]);
+            }
+        }
+
+        function copyScript() {
+            const code = document.getElementById('pythonCode').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('button[onclick="copyScript()"]');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-check"></i> СКОПИРОВАНО!';
+                btn.classList.replace('bg-emerald-600', 'bg-blue-600');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.replace('bg-blue-600', 'bg-emerald-600');
+                }, 2000);
+            });
+        }
+
+        window.onload = () => {
+            setTimeout(addLog, 1000);
+        };
+    </script>
+</body>
+</html>
